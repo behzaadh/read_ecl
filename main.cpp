@@ -11,20 +11,21 @@ int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
 
-    QFile file("C:/Users/behzadh/Desktop/New folder (2)/RESTART.X0000");
-    if (!file.open(QIODevice::ReadOnly))
-    {
-        return 0;
-    }
-
-    QMap<QString, QVector<QVariant> > output = read_ecl(file.readAll());
+    QMap<QString, QVector<QVariant> > output = read_ecl("C:/Users/behzadh/Desktop/RESTART.X0000");
 
     return a.exec();
 }
 
 
-QMap<QString, QVector<QVariant> > read_ecl(const QByteArray &ba)
+QMap<QString, QVector<QVariant> > read_ecl(const QString &filename)
 {
+	QFile file("C:/Users/behzadh/Desktop/New folder (2)/RESTART.X0000");
+    if (!file.open(QIODevice::ReadOnly))
+    {
+        return 0;
+    }
+	
+	QByteArray ba = file.readAll();
     int length = 0;
     QMap<QString, QVector<QVariant> > out;
     // Skip HEADER
