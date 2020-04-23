@@ -33,7 +33,7 @@ QMap<QString, QVector<QVariant> > read_ecl(const QString &filename)
     QString keyword;
     int num    = 0;
     int wsize   = 0;
-    for (int i = 0; i < ba.count(); i++)
+    while (length < ba.count())
     {
         // Read field name (keyword) and array size
         keyword = QString::fromStdString(ba.mid(length, 8*sizeof(quint8)).toStdString());
