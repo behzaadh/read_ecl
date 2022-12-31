@@ -1,6 +1,7 @@
 #include "read_ecl.h"
 #include <fstream>
 #include <iostream>
+#include <algorithm>
 #include <cmath>
 
 #define AreSame(X, Y) ((abs((X)-(Y))) < 1.0e-16)
@@ -67,6 +68,68 @@ int main(void)
         exit(0);
     }
     fid_IWEL.close();
+
+    READ_ECL slb_init("../Examples/2D.INIT");
+    std::ifstream fid_DX("../Examples/DX.mtx", std::ifstream::in);
+
+    if (fid_DX.is_open()) {
+        for (int i = 0; i < slb_init.Data.DATA["DX"][0].size(); ++i) {
+            for (int j = 0; j < slb_init.Data.DATA["DX"].size(); ++j) {
+                int b;
+                fid_DX >> b;
+                if (!AreSame(b, slb_init.Data.DATA["DX"][j][i])) {
+                    std::cerr << __LINE__ << ":Failed to read DX matrix"  << std::endl;
+                    exit(0);
+                }
+            }
+        }
+    } else {
+        std::cerr << __LINE__ << ": unable to open DX matrix"  << std::endl;
+        exit(0);
+    }
+    fid_DX.close();
+
+    std::ifstream fid_LOGIHEAD("../Examples/LOGIHEAD.mtx", std::ifstream::in);
+
+    if (fid_LOGIHEAD.is_open()) {
+        for (int i = 0; i < slb_init.Data.DATA["LOGIHEAD"][0].size(); ++i) {
+            for (int j = 0; j < slb_init.Data.DATA["LOGIHEAD"].size(); ++j) {
+                bool b;
+                fid_LOGIHEAD >> b;
+                bool c = slb_init.Data.DATA["LOGIHEAD"][j][i];
+                if (b != c) {
+                    std::cerr << __LINE__ << ":Failed to read LOGIHEAD matrix"  << std::endl;
+                    exit(0);
+                }
+            }
+        }
+    } else {
+        std::cerr << __LINE__ << ": unable to open LOGIHEAD matrix"  << std::endl;
+        exit(0);
+    }
+    fid_LOGIHEAD.close();
+
+    READ_ECL slb_INSPEC("../Examples/2D.INSPEC");
+    std::ifstream fid_NAMES("../Examples/NAMES.mtx", std::ifstream::in);
+
+    if (fid_NAMES.is_open()) {
+        for (int i = 0; i < slb_INSPEC.Data.HEADER["NAME"][0].size(); ++i) {
+            for (int j = 0; j < slb_INSPEC.Data.HEADER["NAME"].size(); ++j) {
+                std::string b;
+                fid_NAMES >> b;
+                std::string c = slb_INSPEC.Data.HEADER["NAME"][j][i];
+                c.erase(std::remove(c.begin(), c.end(), ' '), c.end());
+                if (b != c) {
+                    std::cerr << __LINE__ << ":Failed to read LOGIHEAD matrix"  << std::endl;
+                    exit(0);
+                }
+            }
+        }
+    } else {
+        std::cerr << __LINE__ << ": unable to open LOGIHEAD matrix"  << std::endl;
+        exit(0);
+    }
+    fid_NAMES.close();
 
     return 0;
 }

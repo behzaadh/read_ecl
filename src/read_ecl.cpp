@@ -77,8 +77,6 @@ READ_ECL::READ_ECL(const std::string &filename) : _i(0)
                 while (_i < maxNum) {
                     Vec_header.push_back(uChar2Str_b());
                 }
-                wsize = 1;
-                num *= 8;
                 break;
             }
             default:
@@ -104,13 +102,20 @@ READ_ECL::READ_ECL(const std::string &filename) : _i(0)
                 } else {
                     Data.DATA[keyword].push_back(Vec_data);
                 }
-
-              // found
             }
-            //data.DATA
             break;
         }
         case 'C':{   // Character
+            if (Data.HEADER.find(keyword) == Data.HEADER.end()) {
+                Data.HEADER[keyword] = std::vector<std::vector<std::string>>{Vec_header};
+            } else {
+                std::vector<std::vector<std::string>> vect = Data.HEADER.at(keyword);
+                if ((vect[0].size() != Vec_header.size()) && (vect.size() < 2)) {
+                    Data.HEADER[keyword][0].insert(Data.HEADER[keyword][0].end(), Vec_header.begin(), Vec_header.end());
+                } else {
+                    Data.HEADER[keyword].push_back(Vec_header);
+                }
+            }
             break;
         }
         default:
