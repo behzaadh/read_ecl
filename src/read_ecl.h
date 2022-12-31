@@ -8,15 +8,16 @@
 #include <stdint.h>
 typedef unsigned char BYTE;
 
-struct {
+struct SLB_DATA{
     std::map<std::string, std::vector<std::vector<double>>>      DATA;     // Double data
     std::map<std::string, std::vector<std::vector<std::string>>> HEADER;     // String/Char data
-} data;
+};
 
 class READ_ECL {
 public:
     READ_ECL(const std::string &filename);
     void printVector(const std::string &key);
+    SLB_DATA Data;
 
 private:
 std::vector<BYTE> byteArray(const char* filename);

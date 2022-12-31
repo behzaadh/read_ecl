@@ -95,14 +95,14 @@ READ_ECL::READ_ECL(const std::string &filename) : _i(0)
         case 'I':    // Integer
         case 'R':    // Real
         case 'D':{   // Double
-            if (data.DATA.find(keyword) == data.DATA.end()) {
-                data.DATA[keyword] = std::vector<std::vector<double>>{Vec_data};
+            if (Data.DATA.find(keyword) == Data.DATA.end()) {
+                Data.DATA[keyword] = std::vector<std::vector<double>>{Vec_data};
             } else {
-                std::vector<std::vector<double>> vect = data.DATA.at(keyword);
+                std::vector<std::vector<double>> vect = Data.DATA.at(keyword);
                 if ((vect[0].size() != Vec_data.size()) && (vect.size() < 2)) {
-                    data.DATA[keyword][0].insert(data.DATA[keyword][0].end(), Vec_data.begin(), Vec_data.end());
+                    Data.DATA[keyword][0].insert(Data.DATA[keyword][0].end(), Vec_data.begin(), Vec_data.end());
                 } else {
-                    data.DATA[keyword].push_back(Vec_data);
+                    Data.DATA[keyword].push_back(Vec_data);
                 }
 
               // found
@@ -123,7 +123,12 @@ READ_ECL::READ_ECL(const std::string &filename) : _i(0)
 
 void READ_ECL::printVector(const std::string &key)
 {
-    std::vector<std::vector<double>> vect = data.DATA.at(key);
+    // Check if key exists
+    if (Data.DATA.find(key) == Data.DATA.end()) {
+        std::cout << "Could not find " << key << std::endl;
+        return;
+    }
+    std::vector<std::vector<double>> vect = Data.DATA.at(key);
 
     for (int i = 0; i < vect.size(); i++) {
         for (int j = 0; j < vect[i].size(); j++) {
