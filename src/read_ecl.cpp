@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <vector>
 
-READ_ECL::READ_ECL(const std::string &filename) : _i(0)
+READ_ECL::READ_ECL(const std::string &filename) : _i(0), _temp4(4), _temp8(8)
 {
     _byteVector = byteArray(filename.c_str());
 
@@ -32,6 +32,11 @@ READ_ECL::READ_ECL(const std::string &filename) : _i(0)
         std::vector<std::string> Vec_header;     // String/Char data
 
         int remnum = num;
+
+        if (type == 'C') {
+            remnum = num * 8;
+        }
+
         int buflen = 0;
         int bufnum = 0;
         int maxNum = 0;
@@ -40,6 +45,9 @@ READ_ECL::READ_ECL(const std::string &filename) : _i(0)
 
             if (type == 'D') {
                 bufnum = buflen / 8;
+                maxNum = _i + buflen;
+            } else if (type == 'C') {
+                bufnum = buflen;
                 maxNum = _i + buflen;
             } else {
                 bufnum = buflen / 4;
@@ -144,8 +152,9 @@ void READ_ECL::printVector(const std::string &key)
 }
 
 /*!
- * \brief convert binary ECLIPSE files to bytearray to read it easily
- * \param filename: file location
+ * \brief convert binary ECLIPSE files to bytearray to read it easily.
+ * adopted from https://stackoverflow.com/a/21802936/4027652
+ * \param filename: file name path
  * \return
  */
 std::vector<BYTE> READ_ECL::byteArray(const char *filename)
@@ -195,42 +204,39 @@ std::string READ_ECL::uChar2Str_b()
 // TODO: find a way to not construct a new vector
 int READ_ECL::uChar2Int_b()
 {
-    std::vector<BYTE> temp(4);
-    temp[3] = _byteVector[_i];
-    temp[2] = _byteVector[_i+1];
-    temp[1] = _byteVector[_i+2];
-    temp[0] = _byteVector[_i+3];
+    _temp4[3] = _byteVector[_i];
+    _temp4[2] = _byteVector[_i+1];
+    _temp4[1] = _byteVector[_i+2];
+    _temp4[0] = _byteVector[_i+3];
     _i += 4;
 
-    return *reinterpret_cast<const int32_t*>(&temp[0]);
+    return *reinterpret_cast<const int32_t*>(&_temp4[0]);
 }
 
 double READ_ECL::uChar2Doub_b()
 {
-    std::vector<BYTE> temp(8);
-    temp[7] = _byteVector[_i];
-    temp[6] = _byteVector[_i+1];
-    temp[5] = _byteVector[_i+2];
-    temp[4] = _byteVector[_i+3];
-    temp[3] = _byteVector[_i+4];
-    temp[2] = _byteVector[_i+5];
-    temp[1] = _byteVector[_i+6];
-    temp[0] = _byteVector[_i+7];
+    _temp8[7] = _byteVector[_i];
+    _temp8[6] = _byteVector[_i+1];
+    _temp8[5] = _byteVector[_i+2];
+    _temp8[4] = _byteVector[_i+3];
+    _temp8[3] = _byteVector[_i+4];
+    _temp8[2] = _byteVector[_i+5];
+    _temp8[1] = _byteVector[_i+6];
+    _temp8[0] = _byteVector[_i+7];
     _i += 8;
 
-    return *reinterpret_cast<const double*>(&temp[0]);
+    return *reinterpret_cast<const double*>(&_temp8[0]);
 }
 
 float READ_ECL::uChar2Real_b()
 {
-    std::vector<BYTE> temp(4);
-    temp[3] = _byteVector[_i];
-    temp[2] = _byteVector[_i+1];
-    temp[1] = _byteVector[_i+2];
-    temp[0] = _byteVector[_i+3];
+    _temp4[3] = _byteVector[_i];
+    _temp4[2] = _byteVector[_i+1];
+    _temp4[1] = _byteVector[_i+2];
+    _temp4[0] = _byteVector[_i+3];
     _i += 4;
 
-    return *reinterpret_cast<const float*>(&temp[0]);
+    return *reinterpret_cast<const float*>(&_temp4[0]);
 }
 
 void READ_ECL::skip()

@@ -3,11 +3,23 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+#include <chrono>
 
 #define AreSame(X, Y) ((abs((X)-(Y))) < 1.0e-16)
 
 int main(void)
 {
+    std::chrono::steady_clock::time_point begin = std::chrono::steady_clock::now();
+    READ_ECL INIT("../Examples/2D.INIT");
+    READ_ECL INSPEC("../Examples/2D.INSPEC");
+    READ_ECL RSSPEC("../Examples/2D.RSSPEC");
+    READ_ECL S0001("../Examples/2D.S0001");
+    READ_ECL SMSPEC("../Examples/2D.SMSPEC");
+    READ_ECL X0000("../Examples/2D.X0000");
+    std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+    std::cout << "Time elapsed = " << std::chrono::duration_cast<std::chrono::milliseconds>(end - begin).count() << "[ms]" << std::endl;
+
+
     READ_ECL slb_sFile("../Examples/2D.S0001");
 
     std::ifstream fid_s("../Examples/PARAMS.mtx", std::ifstream::in);
@@ -23,6 +35,7 @@ int main(void)
                 }
             }
         }
+        std::cout << "Successfully read PARAMS matrix!" << std::endl;
     } else {
         std::cerr << __LINE__ << ": unable to open PARAMS matrix"  << std::endl;
         exit(0);
@@ -44,6 +57,7 @@ int main(void)
                 }
             }
         }
+        std::cout << "Successfully read SWAT matrix!" << std::endl;
     } else {
         std::cerr << __LINE__ << ": unable to open SWAT matrix"  << std::endl;
         exit(0);
@@ -63,6 +77,7 @@ int main(void)
                 }
             }
         }
+        std::cout << "Successfully read IWEL matrix!" << std::endl;
     } else {
         std::cerr << __LINE__ << ": unable to open IWEL matrix"  << std::endl;
         exit(0);
@@ -83,6 +98,7 @@ int main(void)
                 }
             }
         }
+        std::cout << "Successfully read DX matrix!" << std::endl;
     } else {
         std::cerr << __LINE__ << ": unable to open DX matrix"  << std::endl;
         exit(0);
@@ -103,6 +119,7 @@ int main(void)
                 }
             }
         }
+        std::cout << "Successfully read LOGIHEAD matrix!" << std::endl;
     } else {
         std::cerr << __LINE__ << ": unable to open LOGIHEAD matrix"  << std::endl;
         exit(0);
@@ -125,11 +142,59 @@ int main(void)
                 }
             }
         }
+        std::cout << "Successfully read NAMES matrix!" << std::endl;
     } else {
         std::cerr << __LINE__ << ": unable to open LOGIHEAD matrix"  << std::endl;
         exit(0);
     }
     fid_NAMES.close();
+
+    READ_ECL slb_RSSPEC("../Examples/2D.RSSPEC");
+    std::ifstream fid_TYPE("../Examples/TYPE.mtx", std::ifstream::in);
+
+    if (fid_TYPE.is_open()) {
+        for (int i = 0; i < slb_RSSPEC.Data.HEADER["TYPE"][0].size(); ++i) {
+            for (int j = 0; j < slb_RSSPEC.Data.HEADER["TYPE"].size(); ++j) {
+                std::string b;
+                fid_TYPE >> b;
+                std::string c = slb_RSSPEC.Data.HEADER["TYPE"][j][i];
+                c.erase(std::remove(c.begin(), c.end(), ' '), c.end());
+                if (b != c) {
+                    std::cerr << __LINE__ << ":Failed to read TYPE matrix"  << std::endl;
+                    exit(0);
+                }
+            }
+        }
+        std::cout << "Successfully read TYPE matrix!" << std::endl;
+    } else {
+        std::cerr << __LINE__ << ": unable to open TYPE matrix"  << std::endl;
+        exit(0);
+    }
+    fid_TYPE.close();
+
+
+    READ_ECL slb_SMSPEC("../Examples/2D.SMSPEC");
+    std::ifstream fid_DIMS("../Examples/DIMENS.mtx", std::ifstream::in);
+
+    if (fid_DIMS.is_open()) {
+        for (int i = 0; i < slb_SMSPEC.Data.DATA["DIMENS"][0].size(); ++i) {
+            for (int j = 0; j < slb_SMSPEC.Data.DATA["DIMENS"].size(); ++j) {
+                double b;
+                fid_DIMS >> b;
+                double c = slb_SMSPEC.Data.DATA["DIMENS"][j][i];
+                if (!AreSame(b,c)) {
+                    std::cerr << __LINE__ << ":Failed to read DIMENS matrix"  << std::endl;
+                    exit(0);
+                }
+            }
+        }
+        std::cout << "Successfully read DIMENS matrix!" << std::endl;
+    } else {
+        std::cerr << __LINE__ << ": unable to open DIMENS matrix"  << std::endl;
+        exit(0);
+    }
+    fid_DIMS.close();
+
 
     return 0;
 }

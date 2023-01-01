@@ -37,6 +37,8 @@ float uChar2Real_b();
 void skip();
 
 std::vector<BYTE> _byteVector;
+std::vector<BYTE> _temp4;
+std::vector<BYTE> _temp8;
 int _i;
 };
 
