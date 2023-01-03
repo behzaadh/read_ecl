@@ -6,11 +6,14 @@
 #include <vector>
 #include <variant>
 #include <stdint.h>
+// More meaningful names for data type by aliasing existing data types
 typedef unsigned char BYTE;
+typedef std::vector<std::vector<double>> Double2D;
+typedef std::vector<std::vector<std::string>> String2D;
 
 struct SLB_DATA{
-    std::map<std::string, std::vector<std::vector<double>>>      DATA;     // Double data
-    std::map<std::string, std::vector<std::vector<std::string>>> HEADER;     // String/Char data
+    std::map<std::string, Double2D>     DATA;     // Double data
+    std::map<std::string, String2D>     HEADER;   // String/Char data
 };
 
 class READ_ECL {

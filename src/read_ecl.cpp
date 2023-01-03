@@ -102,9 +102,9 @@ READ_ECL::READ_ECL(const std::string &filename) : _i(0), _temp4(4), _temp8(8)
         case 'R':    // Real
         case 'D':{   // Double
             if (Data.DATA.find(keyword) == Data.DATA.end()) {
-                Data.DATA[keyword] = std::vector<std::vector<double>>{Vec_data};
+                Data.DATA[keyword] = Double2D{Vec_data};
             } else {
-                std::vector<std::vector<double>> vect = Data.DATA.at(keyword);
+                Double2D vect = Data.DATA.at(keyword);
                 if ((vect[0].size() != Vec_data.size()) && (vect.size() < 2)) {
                     Data.DATA[keyword][0].insert(Data.DATA[keyword][0].end(), Vec_data.begin(), Vec_data.end());
                 } else {
@@ -115,9 +115,9 @@ READ_ECL::READ_ECL(const std::string &filename) : _i(0), _temp4(4), _temp8(8)
         }
         case 'C':{   // Character
             if (Data.HEADER.find(keyword) == Data.HEADER.end()) {
-                Data.HEADER[keyword] = std::vector<std::vector<std::string>>{Vec_header};
+                Data.HEADER[keyword] = String2D{Vec_header};
             } else {
-                std::vector<std::vector<std::string>> vect = Data.HEADER.at(keyword);
+                String2D vect = Data.HEADER.at(keyword);
                 if ((vect[0].size() != Vec_header.size()) && (vect.size() < 2)) {
                     Data.HEADER[keyword][0].insert(Data.HEADER[keyword][0].end(), Vec_header.begin(), Vec_header.end());
                 } else {
@@ -141,7 +141,7 @@ void READ_ECL::printVector(const std::string &key)
         std::cout << "Could not find " << key << std::endl;
         return;
     }
-    std::vector<std::vector<double>> vect = Data.DATA.at(key);
+    Double2D vect = Data.DATA.at(key);
 
     for (int i = 0; i < vect.size(); i++) {
         for (int j = 0; j < vect[i].size(); j++) {
