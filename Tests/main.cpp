@@ -5,7 +5,10 @@
 #include <cmath>
 #include <chrono>
 
-#define AreSame(X, Y) ((abs((X)-(Y))) < 1.0e-9)
+bool AreSame(double x, double y)
+{
+    return fabs(x - y) < 1.0e-9;
+};
 
 int main(void)
 {
