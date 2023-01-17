@@ -5,7 +5,7 @@
 #include <algorithm>
 #include <vector>
 
-READ_ECL::READ_ECL(const std::string &filename) : _i(0), _temp4(4), _temp8(8)
+READ_ECL::READ_ECL(const std::string &filename) : _temp4(4), _temp8(8), _i(0)
 {
     _byteVector = byteArray(filename.c_str());
 

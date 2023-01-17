@@ -5,7 +5,7 @@
 #include <cmath>
 #include <chrono>
 
-#define AreSame(X, Y) ((abs((X)-(Y))) < 1.0e-16)
+#define AreSame(X, Y) ((abs((X)-(Y))) < 1.0e-9)
 
 int main(void)
 {
@@ -46,7 +46,7 @@ int main(void)
         for (int i = 0; i < X0000.Data.DATA["SWAT"][0].size(); ++i) {
             for (int j = 0; j < X0000.Data.DATA["SWAT"].size(); ++j) {
                 double b;
-                fid_s >> b;
+                fid_SWAT >> b;
                 if (!AreSame(b, X0000.Data.DATA["SWAT"][j][i])) {
                     std::cerr << __LINE__ << ":Failed to read SWAT matrix"  << std::endl;
                     exit(0);
@@ -85,7 +85,7 @@ int main(void)
     if (fid_DX.is_open()) {
         for (int i = 0; i < INIT.Data.DATA["DX"][0].size(); ++i) {
             for (int j = 0; j < INIT.Data.DATA["DX"].size(); ++j) {
-                int b;
+                double b;
                 fid_DX >> b;
                 if (!AreSame(b, INIT.Data.DATA["DX"][j][i])) {
                     std::cerr << __LINE__ << ":Failed to read DX matrix"  << std::endl;

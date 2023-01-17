@@ -33,5 +33,10 @@ enable_testing()
 # subdirs
 add_subdirectory("${CMAKE_SOURCE_DIR}/Examples")
 add_subdirectory("${CMAKE_SOURCE_DIR}/Tests")
+OPTION(BUILD_PY_LIBS "Build python Libraries" ON)
+if (BUILD_PY_LIBS)
+#    add_subdirectory("${CMAKE_SOURCE_DIR}/3rdParty/Eigen")
+#    add_subdirectory("${CMAKE_SOURCE_DIR}/3rdParty/pybind11")
+endif()
 
 target_compile_definitions(READ_ECL PRIVATE READ_ECL_LIBRARY)
