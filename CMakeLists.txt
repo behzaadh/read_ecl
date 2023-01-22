@@ -33,10 +33,28 @@ enable_testing()
 # subdirs
 add_subdirectory("${CMAKE_SOURCE_DIR}/Examples")
 add_subdirectory("${CMAKE_SOURCE_DIR}/Tests")
-OPTION(BUILD_PY_LIBS "Build python Libraries" ON)
+OPTION(BUILD_PY_LIBS "Build python Libraries" OFF)
+
 if (BUILD_PY_LIBS)
-#    add_subdirectory("${CMAKE_SOURCE_DIR}/3rdParty/Eigen")
-#    add_subdirectory("${CMAKE_SOURCE_DIR}/3rdParty/pybind11")
+    add_subdirectory("${PROJECT_SOURCE_DIR}/3rdParty/pybind11/")
+# The python module must have the same name as the directory defined in CMake (read_ecl4py)
+# https://stackoverflow.com/questions/50832434/python-and-c-pybind11-python-extension-module-import-error
+    pybind11_add_module(
+        read_ecl4py
+        "${CMAKE_SOURCE_DIR}/Src/read_ecl.py.cpp"
+    )
+    target_include_directories(
+        read_ecl4py
+        PRIVATE ${PROJECT_SOURCE_DIR}
+    )
+# Specifies sources to use when building a target and/or its dependents
+    target_sources(read_ecl4py PRIVATE
+        ${READ_ECL_SOURCES}
+    )
+    target_link_libraries(
+        read_ecl4py
+        LINK_PRIVATE pybind11::embed
+    )
 endif()
 
 target_compile_definitions(READ_ECL PRIVATE READ_ECL_LIBRARY)
