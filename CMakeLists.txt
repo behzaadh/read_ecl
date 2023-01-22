@@ -43,10 +43,6 @@ if (BUILD_PY_LIBS)
         read_ecl4py
         "${CMAKE_SOURCE_DIR}/Src/read_ecl.py.cpp"
     )
-    target_include_directories(
-        read_ecl4py
-        PRIVATE ${PROJECT_SOURCE_DIR}
-    )
 # Specifies sources to use when building a target and/or its dependents
     target_sources(read_ecl4py PRIVATE
         ${READ_ECL_SOURCES}
