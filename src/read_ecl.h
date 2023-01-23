@@ -6,10 +6,13 @@
 #include <vector>
 #include <variant>
 #include <stdint.h>
-// More meaningful names for data type by aliasing existing data types
-typedef unsigned char BYTE;
-typedef std::vector<std::vector<double>> Double2D;
-typedef std::vector<std::vector<std::string>> String2D;
+// More meaningful names for data type by aliasing existing data
+// typedef was replaced with using to make the code more readable
+// and consistent with the rest of the C++ language
+// shorturl.at/qGT16
+using BYTE = unsigned char;
+using Double2D = std::vector<std::vector<double>>;
+using String2D = std::vector<std::vector<std::string>>;
 
 struct SLB_DATA{
     std::map<std::string, Double2D>     DATA;     // Double data
