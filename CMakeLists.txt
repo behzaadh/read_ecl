@@ -51,6 +51,24 @@ if (BUILD_PY_LIBS)
         read_ecl4py
         LINK_PRIVATE pybind11::embed
     )
+
 endif()
+
+
+OPTION(BUILD_MATLAB_API "Build MATLAB Data API" OFF)
+
+if (BUILD_MATLAB_API)
+    if(WIN32)
+        set(Matlab_INCLUDE_DIRS "C:/Program Files/MATLAB/R2022b/extern/include")
+        set(Matlab_LIBRARIES "C:/Program Files/MATLAB/R2022b/extern/lib/win64/microsoft")
+        set(Matlab_USE_STATIC_LIBS ON)
+    endif()
+#    list(APPEND your_target_SOURCES "extra.cpp")
+    find_package(Matlab REQUIRED)
+    include_directories(${Matlab_INCLUDE_DIRS})
+    target_link_libraries(${CMAKE_PROJECT_NAME} ${Matlab_LIBRARIES})
+
+endif()
+
 
 target_compile_definitions(READ_ECL PRIVATE READ_ECL_LIBRARY)
