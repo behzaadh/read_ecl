@@ -5,6 +5,7 @@
 // https://github.com/tiger-punch-sports-club/pybind11-tutorial
 
 PYBIND11_MAKE_OPAQUE(std::vector<double>);
+PYBIND11_MAKE_OPAQUE(std::vector<std::string>);
 PYBIND11_MAKE_OPAQUE(std::vector<std::vector<double>>);
 PYBIND11_MAKE_OPAQUE(std::vector<std::vector<std::string>>);
 PYBIND11_MAKE_OPAQUE(std::map<std::string, Double2D>);
@@ -15,6 +16,7 @@ PYBIND11_MODULE(read_ecl4py, m)
     m.doc() = "Read Eclipse data file";
 
     pybind11::bind_vector<std::vector<double>>(m, "VectorDouble");
+    pybind11::bind_vector<std::vector<std::string>>(m, "VectorString");
     pybind11::bind_vector<std::vector<std::vector<double>>>(m, "2DVectorDouble");
     pybind11::bind_vector<std::vector<std::vector<std::string>>>(m, "2DVectorString");
     pybind11::bind_map<std::map<std::string, Double2D>>(m, "2DMapDouble");
