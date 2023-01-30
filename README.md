@@ -11,4 +11,4 @@ The test samples took **387** [ms] to be read using MinGW 64-bit, while it took 
 
 ## Python?
 If you are a fan of Python language, make sure to activate the ```BUILD_PY_LIBS``` option during configuration with CMake. Then in the build path, you will find ***.pyd*** librrary that needs to be next to your python script in order to import it.
-NOTE: make sure you have downloaded the [Pybind11][https://github.com/pybind/pybind11] library and place it in 3rdParty folder.
+NOTE: make sure you have downloaded the [Pybind11](https://github.com/pybind/pybind11) library and place it in 3rdParty folder.
