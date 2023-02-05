@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <vector>
 
+std::shared_ptr<READ_ECL> READ_ECL::_instance;
+
 READ_ECL::READ_ECL(const std::string &filename) : _temp4(4), _temp8(8), _i(0)
 {
     _byteVector = byteArray(filename.c_str());
@@ -134,6 +136,50 @@ READ_ECL::READ_ECL(const std::string &filename) : _temp4(4), _temp8(8), _i(0)
     }
 }
 
+Double2D READ_ECL::value(const std::string &key)
+{
+    // Check if key exists
+    if (Data.DATA.find(key) == Data.DATA.end()) {
+        std::cout << "Could not find " << key << std::endl;
+        return Double2D();
+    }
+
+    return Data.DATA.at(key);
+}
+
+std::vector<double> READ_ECL::value(const std::string &key, int col)
+{
+    // Check if key exists
+    if (Data.DATA.find(key) == Data.DATA.end()) {
+        std::cout << "Could not find " << key << std::endl;
+        return std::vector<double>();
+    }
+
+    return Data.DATA.at(key)[col];
+}
+
+String2D READ_ECL::name(const std::string &key)
+{
+    // Check if key exists
+    if (Data.HEADER.find(key) == Data.HEADER.end()) {
+        std::cout << "Could not find " << key << std::endl;
+        return String2D();
+    }
+
+    return Data.HEADER.at(key);
+}
+
+std::vector<std::string> READ_ECL::name(const std::string &key, int col)
+{
+    // Check if key exists
+    if (Data.HEADER.find(key) == Data.HEADER.end()) {
+        std::cout << "Could not find " << key << std::endl;
+        return std::vector<std::string>();
+    }
+
+    return Data.HEADER.at(key)[col];
+}
+
 void READ_ECL::printVector(const std::string &key)
 {
     // Check if key exists
@@ -149,6 +195,18 @@ void READ_ECL::printVector(const std::string &key)
         }
         std::cout << std::endl;
     }
+}
+
+void READ_ECL::CreateInstance(const std::string &filename)
+{
+    if (!READ_ECL::_instance) {
+        READ_ECL::_instance = std::make_shared<READ_ECL>(filename);
+    }
+}
+
+std::shared_ptr<READ_ECL> READ_ECL::getInstance()
+{
+    return READ_ECL::_instance;
 }
 
 /*!

@@ -6,6 +6,7 @@
 #include <vector>
 #include <variant>
 #include <stdint.h>
+#include <memory>
 // More meaningful names for data type by aliasing existing data
 // typedef was replaced with using to make the code more readable
 // and consistent with the rest of the C++ language
@@ -22,8 +23,16 @@ struct SLB_DATA{
 class READ_ECL {
 public:
     READ_ECL(const std::string &filename);
+    Double2D value(const std::string &key);
+    std::vector<double> value(const std::string &key, int col);
+    String2D name(const std::string &key);
+    std::vector<std::string> name(const std::string &key, int col);
     void printVector(const std::string &key);
     SLB_DATA Data;
+
+    // For c interface
+    static void CreateInstance(const std::string &filename);
+    static std::shared_ptr<READ_ECL> getInstance();
 
 private:
 std::vector<BYTE> byteArray(const char* filename);
@@ -45,6 +54,7 @@ void skip();
 std::vector<BYTE> _byteVector;
 std::vector<BYTE> _temp4;
 std::vector<BYTE> _temp8;
+static std::shared_ptr<READ_ECL> _instance;
 int _i;
 };
 

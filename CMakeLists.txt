@@ -9,6 +9,8 @@ set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(READ_ECL_SOURCES
   src/read_ecl.cpp
   src/read_ecl.h
+  src/read_ecl_C.cpp
+  src/read_ecl_C.h
 )
 
 
@@ -55,20 +57,20 @@ if (BUILD_PY_LIBS)
 endif()
 
 
-OPTION(BUILD_MATLAB_API "Build MATLAB Data API" OFF)
+#OPTION(BUILD_MATLAB_API "Build MATLAB Data API" OFF)
 
-if (BUILD_MATLAB_API)
-    if(WIN32)
-        set(Matlab_INCLUDE_DIRS "C:/Program Files/MATLAB/R2022b/extern/include")
-        set(Matlab_LIBRARIES "C:/Program Files/MATLAB/R2022b/extern/lib/win64/microsoft")
-        set(Matlab_USE_STATIC_LIBS ON)
-    endif()
-#    list(APPEND your_target_SOURCES "extra.cpp")
-    find_package(Matlab REQUIRED)
-    include_directories(${Matlab_INCLUDE_DIRS})
-    target_link_libraries(${CMAKE_PROJECT_NAME} ${Matlab_LIBRARIES})
+#if (BUILD_MATLAB_API)
+#    if(WIN32)
+#        set(Matlab_INCLUDE_DIRS "C:/Program Files/MATLAB/R2022b/extern/include")
+#        set(Matlab_LIBRARIES "C:/Program Files/MATLAB/R2022b/extern/lib/win64/microsoft")
+#        set(Matlab_USE_STATIC_LIBS ON)
+#    endif()
+##    list(APPEND your_target_SOURCES "extra.cpp")
+#    find_package(Matlab REQUIRED)
+#    include_directories(${Matlab_INCLUDE_DIRS})
+#    target_link_libraries(${CMAKE_PROJECT_NAME} ${Matlab_LIBRARIES})
 
-endif()
+#endif()
 
 
 target_compile_definitions(READ_ECL PRIVATE READ_ECL_LIBRARY)
