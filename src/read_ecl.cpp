@@ -7,6 +7,11 @@
 
 std::shared_ptr<READ_ECL> READ_ECL::_instance;
 
+/**
+ * @brief Constructs a new instance of the READ_ECL class.
+ * 
+ * @param filename The filename to read from.
+ */
 READ_ECL::READ_ECL(const std::string &filename) : _temp4(4), _temp8(8), _i(0)
 {
     _byteVector = byteArray(filename.c_str());
@@ -136,6 +141,12 @@ READ_ECL::READ_ECL(const std::string &filename) : _temp4(4), _temp8(8), _i(0)
     }
 }
 
+/**
+ * Retrieves the value associated with the given key.
+ *
+ * @param key The key to look up the value for.
+ * @return The value associated with the given key.
+ */
 Double2D READ_ECL::value(const std::string &key)
 {
     // Check if key exists
@@ -147,6 +158,13 @@ Double2D READ_ECL::value(const std::string &key)
     return Data.DATA.at(key);
 }
 
+/**
+ * Retrieves the value from the specified column for the given key.
+ *
+ * @param key The key to search for.
+ * @param col The column index to retrieve the value from.
+ * @return A vector of double values from the specified column for the given key.
+ */
 std::vector<double> READ_ECL::value(const std::string &key, int col)
 {
     // Check if key exists
@@ -158,6 +176,12 @@ std::vector<double> READ_ECL::value(const std::string &key, int col)
     return Data.DATA.at(key)[col];
 }
 
+/**
+ * Retrieves the name associated with the given key.
+ *
+ * @param key The key for which to retrieve the name.
+ * @return The name associated with the key.
+ */
 String2D READ_ECL::name(const std::string &key)
 {
     // Check if key exists
@@ -169,6 +193,13 @@ String2D READ_ECL::name(const std::string &key)
     return Data.HEADER.at(key);
 }
 
+/**
+ * Retrieves the names from the specified key and column in the ECL file.
+ *
+ * @param key The key to search for.
+ * @param col The column index to retrieve the names from.
+ * @return A vector of strings containing the names.
+ */
 std::vector<std::string> READ_ECL::name(const std::string &key, int col)
 {
     // Check if key exists
@@ -180,6 +211,11 @@ std::vector<std::string> READ_ECL::name(const std::string &key, int col)
     return Data.HEADER.at(key)[col];
 }
 
+/**
+ * Prints the elements of a vector associated with the given key.
+ *
+ * @param key The key associated with the vector.
+ */
 void READ_ECL::printVector(const std::string &key)
 {
     // Check if key exists
@@ -197,6 +233,13 @@ void READ_ECL::printVector(const std::string &key)
     }
 }
 
+/**
+ * @brief Creates an instance of the READ_ECL class.
+ * 
+ * This function creates an instance of the READ_ECL class and initializes it with the specified filename.
+ * 
+ * @param filename The name of the file to be read.
+ */
 void READ_ECL::CreateInstance(const std::string &filename)
 {
     if (!READ_ECL::_instance) {
@@ -204,16 +247,26 @@ void READ_ECL::CreateInstance(const std::string &filename)
     }
 }
 
+/**
+ * @brief Returns a shared pointer to the singleton instance of the READ_ECL class.
+ *
+ * This function is used to obtain a shared pointer to the singleton instance of the READ_ECL class.
+ * The singleton pattern ensures that only one instance of the class is created throughout the program's lifetime.
+ *
+ * @return A shared pointer to the singleton instance of the READ_ECL class.
+ */
 std::shared_ptr<READ_ECL> READ_ECL::getInstance()
 {
     return READ_ECL::_instance;
 }
 
-/*!
- * \brief convert binary ECLIPSE files to bytearray to read it easily.
+
+/**
+ * @brief Reads the contents of a file and returns them as a vector of bytes. 
  * adopted from https://stackoverflow.com/a/21802936/4027652
- * \param filename: file name path
- * \return
+ * 
+ * @param filename The name of the file to read.
+ * @return std::vector<BYTE> The contents of the file as a vector of bytes.
  */
 std::vector<BYTE> READ_ECL::byteArray(const char *filename)
 {
@@ -246,6 +299,11 @@ std::vector<BYTE> READ_ECL::byteArray(const char *filename)
     return vec;
 }
 
+/**
+ * Converts an unsigned char to a string representation.
+ *
+ * @return The string representation of the unsigned char.
+ */
 std::string READ_ECL::uChar2Str_b()
 {
     _i += 8;
@@ -253,13 +311,12 @@ std::string READ_ECL::uChar2Str_b()
 }
 
 
-/*!
- * \brief uChar2Int_b
- * \param byteVector
- * \param i
- * \return
- */
 // TODO: find a way to not construct a new vector
+/**
+ * Converts an unsigned char to an integer.
+ *
+ * @return The converted integer value.
+ */
 int READ_ECL::uChar2Int_b()
 {
     _temp4[3] = _byteVector[_i];
@@ -271,6 +328,11 @@ int READ_ECL::uChar2Int_b()
     return *reinterpret_cast<const int32_t*>(&_temp4[0]);
 }
 
+/**
+ * Converts an unsigned char value to a double value.
+ *
+ * @return The converted double value.
+ */
 double READ_ECL::uChar2Doub_b()
 {
     _temp8[7] = _byteVector[_i];
@@ -286,6 +348,11 @@ double READ_ECL::uChar2Doub_b()
     return *reinterpret_cast<const double*>(&_temp8[0]);
 }
 
+/**
+ * Converts an unsigned char value to a float value.
+ *
+ * @return The converted float value.
+ */
 float READ_ECL::uChar2Real_b()
 {
     _temp4[3] = _byteVector[_i];

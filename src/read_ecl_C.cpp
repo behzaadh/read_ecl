@@ -1,4 +1,5 @@
 #include "read_ecl.h"
+#include <cstring>
 
 void Create_Instance_C(const char *filename)
 {
