@@ -10,7 +10,7 @@
 // and consistent with the rest of the C++ language
 // shorturl.at/qGT16
 using BYTE = unsigned char;
-using Int1D = std::vector<double>;
+using Int1D = std::vector<int>;
 using Double1D = std::vector<double>;
 using Double2D = std::vector<std::vector<double>>;
 using String2D = std::vector<std::vector<std::string>>;
